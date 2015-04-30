@@ -61,7 +61,13 @@ BUILDPACK_OWNER=$(expr "$BUILDPACK_URL" : '^.*/\(..*\)/heroku-buildpack-php' || 
 if [[ "$BUILDPACK_BRANCH" != v* && "$BUILDPACK_BRANCH" != "master" ]]; then
     S3_URL="develop"
 fi
-S3_URL="https://lang-php.s3.amazonaws.com/dist-${STACK}-${S3_URL:-"master"}"
+
+ENV_S3_URL=${ENV_S3_URL:-}
+if [[ "$ENV_S3_URL" != "" ]]; then
+    S3_URL=$ENV_S3_URL
+else
+    S3_URL="https://lang-php.s3.amazonaws.com/dist-${STACK}-${S3_URL:-"master"}"
+fi
 RTVS_URL="https://php-runtime-version-selector.herokuapp.com"
 
 cd $BUILD_DIR
